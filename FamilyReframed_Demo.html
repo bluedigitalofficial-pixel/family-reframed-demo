@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Reframed — Specialist Family Mediation for Modern Families</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1128;
+    --navy-mid: #1B2A4A;
+    --teal: #00CFC8;
+    --teal-dim: rgba(0,207,200,0.15);
+    --alabaster: #F4F5F7;
+    --white: #FFFFFF;
+    --gold: #C9A96E;
+    --text-dark: #0A1128;
+    --text-mid: #4A5568;
+    --text-light: #8896A8;
+    --border: rgba(10,17,40,0.08);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--teal);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(0,207,200,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%,-50%);
+    transition: all 0.25s ease;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 60px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+  }
+  header.scrolled {
+    background: rgba(10,17,40,0.96);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  /* Logo */
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: none;
+    text-decoration: none;
+    overflow: hidden;
+    height: 48px;
+    justify-content: center;
+  }
+  .logo-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+    transform-origin: center;
+  }
+  .logo-stacked .f, .logo-stacked .r {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 28px;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: 2px;
+    display: block;
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .logo-stacked .f { margin-bottom: 2px; }
+  .logo-stacked .divider {
+    width: 1px; height: 14px;
+    background: var(--teal);
+    opacity: 0.6;
+    transition: all 0.5s ease;
+    margin: 1px 0;
+  }
+
+  /* Scrolled: FR horizontal */
+  .logo-wrap.collapsed .logo-stacked {
+    flex-direction: row;
+    gap: 0;
+    align-items: baseline;
+  }
+  .logo-wrap.collapsed .logo-stacked .f,
+  .logo-wrap.collapsed .logo-stacked .r {
+    font-size: 22px;
+  }
+  .logo-wrap.collapsed .logo-stacked .divider {
+    display: none;
+  }
+
+  .logo-wordmark {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    transition: opacity 0.4s ease;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+  .logo-wrap.collapsed .logo-wordmark {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    margin: 0;
+  }
+
+  /* Nav right */
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+  }
+  .nav-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,207,200,0.5);
+    padding-bottom: 2px;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    cursor: none;
+  }
+  .nav-cta:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* Hamburger */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: none;
+    padding: 8px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--white);
+    transition: all 0.4s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* ── FULLSCREEN MENU ── */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--navy);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .menu-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .menu-inner {
+    padding: 120px 80px;
+    width: 100%;
+  }
+  .menu-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease 0.2s;
+  }
+  .menu-overlay.open .menu-label {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .menu-links { list-style: none; }
+  .menu-links li {
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .menu-links li a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.15);
+    text-decoration: none;
+    letter-spacing: -1px;
+    display: block;
+    line-height: 1.1;
+    transition: color 0.3s ease;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
+  }
+  .menu-overlay.open .menu-links li a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .menu-links li:nth-child(1) a { transition-delay: 0.15s; }
+  .menu-links li:nth-child(2) a { transition-delay: 0.2s; }
+  .menu-links li:nth-child(3) a { transition-delay: 0.25s; }
+  .menu-links li:nth-child(4) a { transition-delay: 0.3s; }
+  .menu-links li:nth-child(5) a { transition-delay: 0.35s; }
+  .menu-links li a:hover { color: var(--white); }
+  .menu-links li a .sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    display: block;
+    margin-left: 4px;
+    margin-top: -4px;
+    margin-bottom: 8px;
+  }
+  .menu-footer {
+    position: absolute;
+    bottom: 60px;
+    left: 80px;
+    right: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.4s;
+  }
+  .menu-overlay.open .menu-footer { opacity: 1; }
+  .menu-footer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+  }
+  .menu-footer-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    text-decoration: none;
+    cursor: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle grid texture */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,207,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,207,200,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5vw, 68px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+  .hero-headline em {
+    font-style: italic;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .hero-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.55);
+    max-width: 420px;
+    margin-bottom: 52px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s ease 0.9s forwards;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--teal);
+    border: none;
+    padding: 16px 36px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-101%);
+    transition: transform 0.3s ease;
+  }
+  .btn-primary:hover::after { transform: translateX(0); }
+
+  .btn-ghost {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    background: none;
+    border: none;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+    cursor: none;
+  }
+  .btn-ghost:hover { color: var(--white); }
+  .btn-ghost::after {
+    content: '→';
+    font-size: 16px;
+    transition: transform 0.3s ease;
+  }
+  .btn-ghost:hover::after { transform: translateX(4px); }
+
+  /* Pillars strip */
+  .hero-pillars {
+    display: flex;
+    gap: 0;
+    margin-top: 64px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 36px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 1.1s forwards;
+  }
+  .pillar {
+    flex: 1;
+    padding-right: 24px;
+  }
+  .pillar:not(:last-child) {
+    border-right: 1px solid rgba(255,255,255,0.08);
+    margin-right: 24px;
+  }
+  .pillar-icon {
+    width: 20px; height: 20px;
+    margin-bottom: 8px;
+    color: var(--teal);
+    font-size: 14px;
+  }
+  .pillar-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    display: block;
+  }
+  .pillar-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* Hero Right — Image */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1.2s ease 0.6s forwards;
+  }
+  .hero-img-container {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-img-container img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65) saturate(0.8);
+    transform: scale(1.05);
+    animation: slowZoom 12s ease forwards;
+  }
+  .hero-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--navy) 0%, transparent 30%),
+                linear-gradient(to top, var(--navy) 0%, transparent 40%);
+  }
+  .hero-img-caption {
+    position: absolute;
+    bottom: 48px;
+    right: 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  @keyframes slowZoom {
+    to { transform: scale(1); }
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--teal);
+    overflow: hidden;
+    padding: 14px 0;
+    white-space: nowrap;
+  }
+  .ticker {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 32px;
+    padding-right: 64px;
+  }
+  .ticker-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--navy);
+  }
+  .ticker-dot {
+    width: 4px; height: 4px;
+    background: var(--navy);
+    border-radius: 50%;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── PROBLEM SECTION ── */
+  .section-problem {
+    padding: 140px 80px;
+    background: var(--alabaster);
+    position: relative;
+    overflow: hidden;
+  }
+  .section-problem::before {
+    content: 'THE PROBLEM';
+    position: absolute;
+    top: 60px;
+    right: -20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 120px;
+    font-weight: 300;
+    color: rgba(10,17,40,0.04);
+    letter-spacing: -4px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .problem-left {}
+  .section-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: block;
+  }
+  .section-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 4vw, 54px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--navy);
+    letter-spacing: -1px;
+    margin-bottom: 28px;
+  }
+  .section-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--text-mid);
+  }
+
+  .problem-right { padding-top: 20px; }
+  .problem-cards { display: flex; flex-direction: column; gap: 2px; }
+  .problem-card {
+    background: var(--white);
+    padding: 24px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: transform 0.3s ease;
+    cursor: none;
+  }
+  .problem-card:hover { transform: translateX(8px); }
+  .problem-card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: rgba(10,17,40,0.1);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 40px;
+  }
+  .problem-card-content {}
+  .problem-card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .problem-card-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .section-compare {
+    padding: 100px 80px;
+    background: var(--white);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .compare-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .compare-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    background: var(--border);
+  }
+  .compare-col-header {
+    padding: 20px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .compare-col-header.without {
+    background: #F0F2F5;
+    color: var(--text-light);
+  }
+  .compare-col-header.with {
+    background: var(--navy);
+    color: var(--teal);
+  }
+  .compare-row {
+    display: contents;
+  }
+  .compare-cell {
+    padding: 20px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .compare-cell.without {
+    background: #FAFAFA;
+    color: var(--text-light);
+  }
+  .compare-cell.without::before {
+    content: '×';
+    color: #CBD5E1;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .compare-cell.with {
+    background: rgba(10,17,40,0.03);
+    color: var(--navy);
+    font-weight: 400;
+  }
+  .compare-cell.with::before {
+    content: '✓';
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* ── WHO WE HELP ── */
+  .section-who {
+    padding: 140px 80px;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+  .who-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+  .who-left .section-headline { color: var(--white); }
+  .who-left .section-body { color: rgba(255,255,255,0.5); }
+  .who-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 36px;
+  }
+  .who-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 8px 16px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    cursor: none;
+  }
+  .who-tag:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .who-right {}
+  .who-checks { list-style: none; }
+  .who-checks li {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    line-height: 1.6;
+  }
+  .who-checks li::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--teal);
+    margin-top: 11px;
+    flex-shrink: 0;
+  }
+
+  /* ── PATHWAY ── */
+  .section-pathway {
+    padding: 140px 80px;
+    background: var(--alabaster);
+  }
+  .pathway-inner { max-width: 1200px; margin: 0 auto; }
+  .pathway-header { text-align: center; margin-bottom: 80px; }
+  .pathway-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px;
+    background: var(--border);
+    margin-bottom: 60px;
+  }
+  .pathway-step {
+    background: var(--white);
+    padding: 40px 28px;
+    transition: background 0.3s ease;
+    cursor: none;
+    position: relative;
+  }
+  .pathway-step:hover { background: var(--navy); }
+  .pathway-step:hover .step-num,
+  .pathway-step:hover .step-title,
+  .pathway-step:hover .step-desc { color: rgba(255,255,255,0.6); }
+  .pathway-step:hover .step-num { color: var(--teal); }
+  .pathway-step:hover .step-title { color: var(--white); }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: rgba(10,17,40,0.12);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+  }
+  .step-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+  }
+  .step-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.7;
+    transition: color 0.3s ease;
+  }
+
+  .pathway-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    background: var(--border);
+  }
+  .pathway-option {
+    background: var(--white);
+    padding: 40px 36px;
+    transition: all 0.3s ease;
+    cursor: none;
+  }
+  .pathway-option:hover { background: var(--navy); }
+  .pathway-option:hover .option-title,
+  .pathway-option:hover .option-desc { color: rgba(255,255,255,0.6); }
+  .pathway-option:hover .option-title { color: var(--white); }
+  .pathway-option:hover .option-icon { color: var(--teal); }
+  .option-icon {
+    font-size: 20px;
+    margin-bottom: 16px;
+    display: block;
+    transition: color 0.3s ease;
+  }
+  .option-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+  }
+  .option-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.7;
+    transition: color 0.3s ease;
+  }
+
+  /* ── DIFFERENTIATORS ── */
+  .section-diff {
+    padding: 140px 80px;
+    background: var(--white);
+  }
+  .diff-inner { max-width: 1200px; margin: 0 auto; }
+  .diff-header { margin-bottom: 80px; }
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    background: var(--border);
+  }
+  .diff-card {
+    background: var(--white);
+    padding: 52px 48px;
+    transition: background 0.4s ease;
+    cursor: none;
+  }
+  .diff-card:hover { background: var(--navy); }
+  .diff-card:hover .diff-title,
+  .diff-card:hover .diff-body { color: rgba(255,255,255,0.6); }
+  .diff-card:hover .diff-title { color: var(--white); }
+  .diff-card:hover .diff-num { color: rgba(0,207,200,0.15); }
+  .diff-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    font-weight: 300;
+    color: rgba(10,17,40,0.05);
+    line-height: 0.9;
+    margin-bottom: 28px;
+    display: block;
+    transition: color 0.4s ease;
+  }
+  .diff-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.2;
+    transition: color 0.4s ease;
+  }
+  .diff-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.8;
+    transition: color 0.4s ease;
+  }
+
+  /* ── TESTIMONIALS ── */
+  .section-testimonials {
+    padding: 140px 80px;
+    background: var(--navy);
+    overflow: hidden;
+  }
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-header { margin-bottom: 80px; }
+  .testimonials-header .section-headline { color: var(--white); }
+  .testimonials-header .section-body { color: rgba(255,255,255,0.4); }
+  .testimonials-group-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    margin-top: 52px;
+  }
+  .testimonials-group-label:first-of-type { margin-top: 0; }
+  .testimonials-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 3px;
+    background: rgba(255,255,255,0.04);
+  }
+  .testimonial-card {
+    background: rgba(255,255,255,0.03);
+    padding: 40px 36px;
+    border-left: 2px solid rgba(0,207,200,0.2);
+    transition: border-color 0.3s ease, background 0.3s ease;
+    cursor: none;
+  }
+  .testimonial-card:hover {
+    border-color: var(--teal);
+    background: rgba(0,207,200,0.05);
+  }
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .testimonial-quote::before { content: '\201C'; color: var(--teal); }
+  .testimonial-quote::after { content: '\201D'; color: var(--teal); }
+  .testimonial-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    text-transform: uppercase;
+  }
+
+  /* ── FAQ ── */
+  .section-faq {
+    padding: 140px 80px;
+    background: var(--alabaster);
+  }
+  .faq-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .faq-header { text-align: center; margin-bottom: 80px; }
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: none;
+    text-align: left;
+    gap: 24px;
+  }
+  .faq-question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .faq-icon {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+    color: var(--text-mid);
+    transition: all 0.3s ease;
+    font-style: normal;
+  }
+  .faq-item.open .faq-icon {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 300px;
+    padding-bottom: 28px;
+  }
+  .faq-answer-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.9;
+  }
+
+  /* ── CTA SECTION ── */
+  .section-cta {
+    padding: 160px 80px;
+    background: var(--navy);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,207,200,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: block;
+  }
+  .cta-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .cta-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 52px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.8;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #060C1C;
+    padding: 80px 80px 0;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .footer-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.8;
+    max-width: 280px;
+    margin-bottom: 28px;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 16px;
+  }
+  .social-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: none;
+    font-style: normal;
+  }
+  .social-icon:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+  }
+  .footer-col-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 12px; }
+  .footer-links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: none;
+  }
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-legal {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.2);
+  }
+  .footer-legal-links {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-legal-links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    cursor: none;
+  }
+  .footer-legal-links a:hover { color: rgba(255,255,255,0.5); }
+
+  /* ── DEMO BADGE ── */
+  .demo-badge {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--teal);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(0,207,200,0.3);
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 8px 32px rgba(0,207,200,0.3); }
+    50% { box-shadow: 0 8px 48px rgba(0,207,200,0.5); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    header { padding: 0 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 120px 24px 60px; }
+    .hero-pillars { display: none; }
+    .section-problem, .section-compare, .section-who, .section-pathway,
+    .section-diff, .section-testimonials, .section-faq, .section-cta,
+    footer { padding-left: 24px; padding-right: 24px; }
+    .problem-grid, .who-inner { grid-template-columns: 1fr; gap: 48px; }
+    .pathway-steps { grid-template-columns: 1fr 1fr; }
+    .pathway-options { grid-template-columns: 1fr; }
+    .diff-grid { grid-template-columns: 1fr; }
+    .compare-table { grid-template-columns: 1fr; }
+    .compare-col-header.without { display: none; }
+    .compare-cell.without { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .menu-inner { padding: 120px 24px; }
+    .menu-footer { left: 24px; right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Demo Badge -->
+<div class="demo-badge">⚡ Website Preview — Blue Digital Pixel</div>
+
+<!-- Header -->
+<header id="mainHeader">
+  <a href="#" class="logo-wrap" id="logoWrap">
+    <div class="logo-stacked" id="logoStacked">
+      <span class="f">F</span>
+      <span class="divider"></span>
+      <span class="r">R</span>
+    </div>
+    <span class="logo-wordmark">Family Reframed</span>
+  </a>
+
+  <nav class="nav-right">
+    <a href="#" class="nav-cta">Say Hello</a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+</header>
+
+<!-- Fullscreen Menu -->
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-inner">
+    <p class="menu-label">Navigation</p>
+    <ul class="menu-links">
+      <li><a href="#">Home<span class="sub">Start here</span></a></li>
+      <li><a href="#">About<span class="sub">Our mission · Our story · Meet Shabana</span></a></li>
+      <li><a href="#">Family Reframed Pathway<span class="sub">How it works · Pathway options · Fees</span></a></li>
+      <li><a href="#">Insights<span class="sub">Resources · Articles · SOS Guides</span></a></li>
+      <li><a href="#">Get Your Guide<span class="sub">Free family mediation guide</span></a></li>
+    </ul>
+  </div>
+  <div class="menu-footer">
+    <span class="menu-footer-text">familyreframed.me · Dubai, UAE</span>
+    <a href="#" class="menu-footer-cta">Book a Clarity Call →</a>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Specialist Family Mediation for Modern Families</span>
+    <h1 class="hero-headline">
+      Separate Clearly.<br>
+      Parent Better.<br>
+      <em>Protect What Matters.</em>
+    </h1>
+    <p class="hero-sub">
+      We help couples and families through separation, parenting arrangements, and financial transitions — with one expert, one process, and the clarity to move forward with confidence.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Schedule an Initial Call</a>
+      <a href="#" class="btn-ghost">Discover Your Guide</a>
+    </div>
+
+    <div class="hero-pillars">
+      <div class="pillar">
+        <div class="pillar-icon">◈</div>
+        <span class="pillar-name">Confidential</span>
+        <p class="pillar-desc">& Discreet</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◎</div>
+        <span class="pillar-name">Neutral</span>
+        <p class="pillar-desc">& Impartial</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◇</div>
+        <span class="pillar-name">Child-Focused</span>
+        <p class="pillar-desc">Approach</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◉</div>
+        <span class="pillar-name">Cross-Border</span>
+        <p class="pillar-desc">Aware</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">◈</div>
+        <span class="pillar-name">Fixed Fees</span>
+        <p class="pillar-desc">No surprises</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-img-container">
+      <!-- DIFC-style luxury interior — UAE professional aesthetic -->
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6d21b734?w=1200&q=85&fit=crop" alt="Refined UAE interior" loading="eager" />
+      <div class="hero-img-overlay"></div>
+    </div>
+    <div class="hero-img-caption">Dubai · UAE · familyreframed.me</div>
+  </div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item">
+      <span class="ticker-text">One Couple. One Expert. One Pathway.</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Confidential &amp; Discreet</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">UAE &amp; Cross-Border Specialists</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Fixed Fee Packages</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Child-Focused Approach</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Clarity Call Within One Working Day</span>
+      <span class="ticker-dot"></span>
+    </div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item">
+      <span class="ticker-text">One Couple. One Expert. One Pathway.</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Confidential &amp; Discreet</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">UAE &amp; Cross-Border Specialists</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Fixed Fee Packages</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Child-Focused Approach</span>
+      <span class="ticker-dot"></span>
+      <span class="ticker-text">Clarity Call Within One Working Day</span>
+      <span class="ticker-dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Problem Section -->
+<section class="section-problem">
+  <div class="problem-grid reveal">
+    <div class="problem-left">
+      <span class="section-eyebrow">The Reality</span>
+      <h2 class="section-headline">Couples don't break<br><em style="font-style:italic;color:var(--text-mid)">in one place.</em></h2>
+      <p class="section-body" style="margin-bottom:24px;">Everything breaks at once. Separation causes emotional, financial, and parenting conflict simultaneously.</p>
+      <p class="section-body">Traditional processes often create conflicting advice, escalating costs, and delayed decisions — turning the process itself into the problem.</p>
+
+      <!-- Image block under copy -->
+      <div style="margin-top:40px;position:relative;overflow:hidden;height:260px;">
+        <img src="https://images.unsplash.com/photo-1573497161161-c3e73707e25c?w=800&q=80&fit=crop" alt="Professional consultation" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.9) saturate(0.85);" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(10,17,40,0.5) 0%, transparent 60%);"></div>
+        <p style="position:absolute;bottom:20px;left:20px;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.6);text-transform:uppercase;">One Expert. One Process.</p>
+      </div>
+    </div>
+    <div class="problem-right">
+      <div class="problem-cards">
+        <div class="problem-card">
+          <span class="problem-card-num">01</span>
+          <div class="problem-card-content">
+            <p class="problem-card-title">Conflicting Professional Advice</p>
+            <p class="problem-card-text">Lawyers, therapists, and accountants working separately — each with a different view of the same family.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-num">02</span>
+          <div class="problem-card-content">
+            <p class="problem-card-title">Escalating Legal Costs</p>
+            <p class="problem-card-text">Hourly billing with no ceiling — costs grow as conflict grows, with no structured path to resolution.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-num">03</span>
+          <div class="problem-card-content">
+            <p class="problem-card-title">Greater Impact on Children</p>
+            <p class="problem-card-text">Prolonged disputes leave children caught between two processes — without a unified, child-focused approach.</p>
+          </div>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-num">04</span>
+          <div class="problem-card-content">
+            <p class="problem-card-title">Delayed Decision-Making</p>
+            <p class="problem-card-text">Without a coordinated structure, families manage conflict instead of finding resolution.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Compare -->
+<div style="background:var(--white);padding:0 80px 80px;">
+  <div class="section-compare reveal" style="padding:0;max-width:1200px;margin:0 auto;">
+    <div class="compare-table">
+      <div class="compare-col-header without">Without a Collaborative Structure</div>
+      <div class="compare-col-header with">With Family Reframed</div>
+      <div class="compare-row">
+        <div class="compare-cell without">Repetitive arguments</div>
+        <div class="compare-cell with">Structured conversations</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell without">Fragmented advice</div>
+        <div class="compare-cell with">Co-ordinated independent advice</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell without">Escalating legal costs</div>
+        <div class="compare-cell with">Proportionate fixed package costs</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell without">Delayed decisions</div>
+        <div class="compare-cell with">Clear pathways forward</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell without">Pressure on children</div>
+        <div class="compare-cell with">Child-focused decision making</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Who We Help -->
+<section class="section-who">
+  <!-- Full-bleed background image for Who We Help -->
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;">
+    <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&q=80&fit=crop" alt="Dubai skyline" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.18) saturate(0.6);" />
+  </div>
+  <div class="who-inner reveal" style="position:relative;z-index:1;">
+    <div class="who-left">
+      <span class="section-eyebrow">Who We Help</span>
+      <h2 class="section-headline">For families who want a better way forward.</h2>
+      <p class="section-body">We work with couples and families going through prenup discussions, separation, divorce, or post-marriage conflict involving finances or children.</p>
+      <div class="who-tags">
+        <span class="who-tag">Separation &amp; Divorce</span>
+        <span class="who-tag">Co-Parenting</span>
+        <span class="who-tag">Prenuptial Agreements</span>
+        <span class="who-tag">Financial Settlements</span>
+        <span class="who-tag">Cross-Border Families</span>
+        <span class="who-tag">Expat Couples</span>
+      </div>
+    </div>
+    <div class="who-right">
+      <ul class="who-checks">
+        <li>Couples caught in cross-border complexity — UAE, UK, or international</li>
+        <li>Families struggling to make progress through ongoing disagreement</li>
+        <li>Parents navigating decisions about children, money, and shared assets</li>
+        <li>Individuals feeling overwhelmed by conflicting advice</li>
+        <li>Couples where communication is breaking down or becoming repetitive</li>
+        <li>Lawyers, therapists, and accountants supporting families through transition</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Pathway -->
+<section class="section-pathway">
+  <div class="pathway-inner">
+    <div class="pathway-header reveal">
+      <span class="section-eyebrow">The Family Reframed Pathway</span>
+      <h2 class="section-headline">One Process. One Expert.<br>One Pathway to Resolution.</h2>
+    </div>
+
+    <div class="pathway-steps reveal">
+      <div class="pathway-step">
+        <div class="step-num">01</div>
+        <p class="step-title">Can We Help?</p>
+        <p class="step-desc">Free Clarity Call to understand your situation. We only take on matters where we can genuinely add value.</p>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">02</div>
+        <p class="step-title">Your Pathway</p>
+        <p class="step-desc">We design a pathway around your specific needs — no two families require exactly the same support.</p>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">03</div>
+        <p class="step-title">Structured Conversations</p>
+        <p class="step-desc">Guided sessions focused on understanding, problem-solving, and finding workable solutions.</p>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">04</div>
+        <p class="step-title">Agreement</p>
+        <p class="step-desc">Solutions shaped into clear, practical agreements — understood, supported, and capable of lasting.</p>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">05</div>
+        <p class="step-title">Moving Forward</p>
+        <p class="step-desc">An agreement is the beginning of the next chapter. We remain available as life continues to evolve.</p>
+      </div>
+    </div>
+
+    <div class="pathway-options reveal">
+      <div class="pathway-option">
+        <span class="option-icon">◈</span>
+        <p class="option-title">Mediation-Led</p>
+        <p class="option-desc">Structured sessions to help couples work through decisions directly, with support to reduce conflict.</p>
+      </div>
+      <div class="pathway-option">
+        <span class="option-icon">◎</span>
+        <p class="option-title">Legally Guided</p>
+        <p class="option-desc">Mediation supported by legal expertise where needed, resolving complex issues without escalation.</p>
+      </div>
+      <div class="pathway-option">
+        <span class="option-icon">◇</span>
+        <p class="option-title">Child-Inclusive</p>
+        <p class="option-desc">A structured approach that considers children's needs and includes child-focused professional input.</p>
+      </div>
+      <div class="pathway-option">
+        <span class="option-icon">◉</span>
+        <p class="option-title">Finance-Guided</p>
+        <p class="option-desc">Brings clarity to financial disclosure and settlement discussions, often with a jointly instructed expert.</p>
+      </div>
+      <div class="pathway-option">
+        <span class="option-icon">⊕</span>
+        <p class="option-title">Therapeutic</p>
+        <p class="option-desc">Support for the emotional and relational aspects of separation — communication and decision-making.</p>
+      </div>
+      <div class="pathway-option">
+        <span class="option-icon">⊗</span>
+        <p class="option-title">Collaborative</p>
+        <p class="option-desc">For complex matters requiring multiple disciplines working together in one coordinated process.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px;" class="reveal">
+      <a href="#" class="btn-primary" style="background:var(--navy);color:var(--white);">Book a Free Clarity Call</a>
+    </div>
+  </div>
+</section>
+
+<!-- Image Mosaic — UAE/Diverse Families Visual Break -->
+<section style="padding:0;background:var(--navy);display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:360px;gap:3px;overflow:hidden;">
+  <div style="position:relative;overflow:hidden;">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&q=80&fit=crop" alt="Refined luxury interior UAE" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(0.8);transition:transform 0.6s ease;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,17,40,0.7) 0%,transparent 50%);"></div>
+    <div style="position:absolute;bottom:32px;left:32px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--white);line-height:1.3;">Clarity where<br>there is confusion.</p>
+    </div>
+  </div>
+  <div style="position:relative;overflow:hidden;">
+    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80&fit=crop" alt="Professional couple discussion" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65) saturate(0.7);transition:transform 0.6s ease;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,17,40,0.6) 0%,transparent 60%);"></div>
+    <div style="position:absolute;bottom:24px;left:24px;">
+      <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;">Structured Support</p>
+    </div>
+  </div>
+  <div style="position:relative;overflow:hidden;">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80&fit=crop&crop=face" alt="International family" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6) saturate(0.7);transition:transform 0.6s ease;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,17,40,0.65) 0%,transparent 60%);"></div>
+    <div style="position:absolute;bottom:24px;left:24px;">
+      <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2px;color:var(--teal);text-transform:uppercase;">Cross-Border Expertise</p>
+    </div>
+  </div>
+</section>
+
+<!-- What Makes Us Different -->
+<section class="section-diff">
+  <div class="diff-inner">
+    <div class="diff-header reveal">
+      <span class="section-eyebrow">What Makes Us Different</span>
+      <h2 class="section-headline">Family is all we do.</h2>
+    </div>
+    <div class="diff-grid reveal">
+      <div class="diff-card">
+        <span class="diff-num">01</span>
+        <h3 class="diff-title">Family Is All We Do</h3>
+        <p class="diff-body">We are not a general mediation service. Our entire focus is helping couples and families — because focus creates expertise, and expertise creates better outcomes.</p>
+      </div>
+      <div class="diff-card">
+        <span class="diff-num">02</span>
+        <h3 class="diff-title">Fast When It Matters Most</h3>
+        <p class="diff-body">Clarity Calls within one working day. Initial consultations within five. Family issues rarely improve by waiting — we don't ask you to.</p>
+      </div>
+      <div class="diff-card">
+        <span class="diff-num">03</span>
+        <h3 class="diff-title">Collaborative by Design</h3>
+        <p class="diff-body">We bring the right expertise together at strategic points — legal, financial, therapeutic, child-focused — within one coordinated process. Not outside of it.</p>
+      </div>
+      <div class="diff-card">
+        <span class="diff-num">04</span>
+        <h3 class="diff-title">Transparent Fixed Fees</h3>
+        <p class="diff-body">No hourly billing. No unexpected invoices. No incentive to prolong the process. You focus on resolution — not on managing escalating costs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Founder Teaser — image with text overlay -->
+<section style="position:relative;height:500px;overflow:hidden;display:flex;align-items:center;">
+  <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1600&q=80&fit=crop&crop=top" alt="Professional mediator" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.35) saturate(0.6);" />
+  <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(10,17,40,0.95) 0%, rgba(10,17,40,0.4) 60%, transparent 100%);"></div>
+  <div style="position:relative;z-index:2;padding:0 80px;max-width:700px;">
+    <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:500;letter-spacing:4px;color:var(--teal);text-transform:uppercase;display:block;margin-bottom:24px;">Meet the Founder</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--white);line-height:1.15;letter-spacing:-1px;margin-bottom:24px;">A decade of family law.<br><em style="font-style:italic;color:rgba(255,255,255,0.5);">A better way forward.</em></h2>
+    <p style="font-family:'Inter',sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.9;margin-bottom:36px;max-width:480px;">Shabana Saleem is a family mediator and barrister with over a decade of experience in complex and cross-border family matters, formerly of leading law firms in London and Dubai.</p>
+    <a href="#" style="font-family:'Inter',sans-serif;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--navy);background:var(--teal);padding:14px 32px;text-decoration:none;display:inline-block;cursor:none;">Meet Shabana →</a>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section-testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header reveal">
+      <span class="section-eyebrow">Client Testimonials</span>
+      <h2 class="section-headline">Real clients.<br>Real decisions.<br>Real outcomes.</h2>
+    </div>
+
+    <p class="testimonials-group-label reveal">Expertise &amp; Trust</p>
+    <div class="testimonials-track reveal">
+      <div class="testimonial-card">
+        <p class="testimonial-quote">She brings a rare balance of intellectual rigor and human understanding — navigating sensitive family and wealth matters with discretion, clarity, and tact.</p>
+        <span class="testimonial-meta">Mr E — British Client</span>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">Shabana stands out as an exceptional professional, combining deep technical knowledge with genuine empathy and sound commercial judgment.</p>
+        <span class="testimonial-meta">Mr M — Spanish Client</span>
+      </div>
+    </div>
+
+    <p class="testimonials-group-label reveal">Calm Through Conflict</p>
+    <div class="testimonials-track reveal">
+      <div class="testimonial-card">
+        <p class="testimonial-quote">Shabana gave exceptional support during a grueling 8-hour mediation. She remained calm, professional, and incredibly focused. What truly sets her apart is her integrity.</p>
+        <span class="testimonial-meta">Ms F — Canadian Client</span>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">Her attention to detail and incredible determination definitely set her apart — most definitely someone you need when going through a tough time.</p>
+        <span class="testimonial-meta">American Client, Based in KSA</span>
+      </div>
+    </div>
+
+    <p class="testimonials-group-label reveal">Cross-Border &amp; Complex Matters</p>
+    <div class="testimonials-track reveal">
+      <div class="testimonial-card">
+        <p class="testimonial-quote">She guided me through UK and UAE law with confidence, calmness, and efficiency — even under significant time pressure.</p>
+        <span class="testimonial-meta">Ms K — British Client</span>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-quote">I am deeply grateful and would recommend Shabana without hesitation. She is not only highly skilled, but truly committed to her clients and their families.</p>
+        <span class="testimonial-meta">Mr J — Indian Client</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-faq">
+  <div class="faq-inner">
+    <div class="faq-header reveal">
+      <span class="section-eyebrow">Frequently Asked Questions</span>
+      <h2 class="section-headline">Clear answers,<br>before you begin.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">What is Family Reframed?</span>
+          <i class="faq-icon">+</i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Family Reframed is a specialist family mediation service for couples and families navigating separation, divorce, parenting arrangements, and financial transitions — with a difference. We offer a structured process that regularly includes strategic input from therapists, accountants, lawyers, and other professionals, designed to bring clarity, reduce conflict, and support better decision-making.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">How is this different from court or traditional mediation?</span>
+          <i class="faq-icon">+</i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Traditional legal processes often separate issues into different tracks — lawyers for legal matters, therapists for personal concerns, accountants for finances. This leads to fragmented advice and slower resolution. Family Reframed brings these elements into one coordinated process, so decisions are made with clarity and context, not in isolation.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">Do you work with international or cross-border families?</span>
+          <i class="faq-icon">+</i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes. Many of our clients live across different jurisdictions or deal with international legal, financial, or cultural considerations. We specialise in expat couples and families based in the UAE and Middle East. Our process is designed specifically to handle this kind of complexity in a structured and coordinated way.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">How much does it cost?</span>
+          <i class="faq-icon">+</i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We work on fixed fee packages, adapted to reflect the pathway each family requires. Most couples invest between AED 15,000 – AED 25,000 + VAT per person, depending on complexity and level of professional input required. This gives you full clarity from the outset, with no hourly billing or escalating costs.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">When should you reach out?</span>
+          <i class="faq-icon">+</i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">As early as possible. The earlier you begin thinking about the process and your options, the more options remain available for resolution without escalation. We offer a free 15-minute Clarity Call — no commitment, no pressure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-cta" style="position:relative;">
+  <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&q=75&fit=crop" alt="Dubai cityscape" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.12) saturate(0.5);" />
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(10,17,40,0.5) 0%, rgba(10,17,40,0.95) 70%);"></div>
+  <div style="position:relative;z-index:2;">
+  <span class="cta-eyebrow">Take The First Step</span>
+  <h2 class="cta-headline">A conversation costs nothing.<br>Waiting often does.</h2>
+  <p class="cta-sub">Schedule a free 15-minute Clarity Call. We'll tell you honestly whether we can help — and point you in the right direction if we can't.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary">Schedule a Clarity Call</a>
+      <a href="#" class="btn-ghost" style="color:rgba(255,255,255,0.5);">Get Your Free Guide</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">F · R</span>
+      <p class="footer-tagline">Specialist Family Mediation for Modern Families. Helping couples reframe the conversation and achieve practical agreements around separation, children and finances.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-icon">in</a>
+        <a href="#" class="social-icon">ig</a>
+      </div>
+    </div>
+    <div>
+      <p class="footer-col-title">About</p>
+      <ul class="footer-links">
+        <li><a href="#">Our Mission</a></li>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Our Values</a></li>
+        <li><a href="#">Meet the Founder</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Pathway</p>
+      <ul class="footer-links">
+        <li><a href="#">Who We Help</a></li>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">Pathway Options</a></li>
+        <li><a href="#">Clarity on Fees</a></li>
+        <li><a href="#">Family Journeys</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Insights</p>
+      <ul class="footer-links">
+        <li><a href="#">Resources</a></li>
+        <li><a href="#">Articles</a></li>
+        <li><a href="#">SOS Guides</a></li>
+        <li><a href="#">Reflections</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="padding:32px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+    <p style="font-family:'Inter',sans-serif;font-size:11px;font-weight:300;color:rgba(255,255,255,0.2);line-height:1.8;max-width:900px;">
+      Family Reframed is a private mediation and family dispute resolution service registered in the United Arab Emirates. We do not provide legal advice and representation. The information on this website is for general information purposes only and does not constitute legal, financial, tax, psychological, or other professional advice.
+    </p>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-legal">© 2026 Family Reframed FZE trading as Family Reframed. All Rights Reserved.</p>
+    <div class="footer-legal-links">
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Data Protection</a>
+      <a href="#">Online Forms</a>
+      <a href="#">FAQs</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+  function animateRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animateRing); }
+  animateRing();
+
+  // Header scroll
+  const header = document.getElementById('mainHeader');
+  const logoWrap = document.getElementById('logoWrap');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      header.classList.add('scrolled');
+      logoWrap.classList.add('collapsed');
+    } else {
+      header.classList.remove('scrolled');
+      logoWrap.classList.remove('collapsed');
+    }
+  });
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const menuOverlay = document.getElementById('menuOverlay');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    menuOverlay.classList.toggle('open');
+    document.body.style.overflow = menuOverlay.classList.contains('open') ? 'hidden' : '';
+  });
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
